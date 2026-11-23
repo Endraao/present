@@ -209,6 +209,12 @@ export async function saveForLater(item: QueueItem) {
   await client.forwardMessages('me', { messages: [item.msgId], fromPeer: peer })
 }
 
+/** Development helper: clear a chat for yourself only. */
+export async function clearHistory(chatId: string) {
+  const entity = await client.getEntity(chatId.startsWith('-') ? Number(chatId) : chatId)
+  await client.invoke(new Api.messages.DeleteHistory({ peer: entity as any, maxId: 0, justClear: true }))
+}
+
 export function myName() {
   return meName
 }

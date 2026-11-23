@@ -150,8 +150,8 @@ async function renderCatchup(data: Catchup) {
   if (!data.items.length) {
     return show([text(1, 'catch', `${head}\n\nNothing else happened.\n\nTap  -  done`, 0, H, 1)])
   }
-  const rows = data.items.map(i => `${cut(i.chat, 16)} (${i.count}): ${i.line}`)
-  await show([text(1, 'catchhead', `${head}\nTap to finish`, 0, 56, 0, 3)], [list(2, 'catch', rows, 56, H - 56)])
+  const rows = data.items.slice(0, 6).map(i => `- ${cut(i.chat, 16)} (${i.count}): ${cut(i.line, 44)}`)
+  await show([text(1, 'catch', `${head}\n\n${rows.join('\n')}\n\nTap  -  done`, 0, H, 1)])
 }
 
 // ---------------------------------------------------------------------------

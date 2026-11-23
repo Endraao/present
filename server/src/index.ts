@@ -133,6 +133,16 @@ if (process.env.PRESENT_DEV === '1') {
     }
     res.json({ ok: true })
   })
+
+  // Clears a chat's history on your side only (used to reset the demo group).
+  api.post('/dev/clear', async (req, res) => {
+    try {
+      await tg.clearHistory(String(req.body?.chatId))
+      res.json({ ok: true })
+    } catch (err) {
+      res.status(500).json({ error: (err as Error).message })
+    }
+  })
 }
 
 app.use('/api', api)
