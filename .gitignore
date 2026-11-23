@@ -6,3 +6,4 @@ dist/
 server/data/
 asr-ref/
 *.log
+!.env.example
