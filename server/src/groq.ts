@@ -12,7 +12,7 @@ export async function chatJson<T>(messages: ChatMessage[], maxTokens = 600): Pro
     body: JSON.stringify({
       model: config.textModel,
       messages,
-      temperature: 0.4,
+      temperature: 0.2,
       max_completion_tokens: maxTokens,
       reasoning_effort: 'low',
       response_format: { type: 'json_object' },
@@ -43,8 +43,20 @@ function pcmToWav(pcm: Buffer, sampleRate = 16000): Buffer {
   return Buffer.concat([header, pcm])
 }
 
-/** Speech to text with Whisper on Groq. */
+/** Loudness of s16le PCM. Whisper invents text ("Thank you.") on silence, so we gate on it. */
+function rms(pcm: Buffer): number {
+  let sum = 0
+  const n = Math.floor(pcm.length / 2)
+  for (let i = 0; i < n; i++) {
+    const s = pcm.readInt16LE(i * 2)
+    sum += s * s
+  }
+  return n ? Math.sqrt(sum / n) : 0
+}
+
+/** Speech to text with Whisper on Groq. Returns '' when nothing was said. */
 export async function transcribe(pcm: Buffer): Promise<string> {
+  if (pcm.length < 16000 || rms(pcm) < 150) return ''
   const form = new FormData()
   form.append('file', new Blob([new Uint8Array(pcmToWav(pcm))], { type: 'audio/wav' }), 'voice.wav')
   form.append('model', config.sttModel)

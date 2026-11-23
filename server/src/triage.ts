@@ -33,6 +33,7 @@ Decide if this message needs the user NOW, and draft replies.
 
 needs_you = true only if ignoring it for an hour would hurt: a direct question or request to the user, a time-sensitive plan, a decision someone is waiting on, an emergency or security problem, or someone the user clearly cares about reaching out personally.
 needs_you = false for chit-chat, greetings, memes, FYIs, announcements, things that can wait.
+A direct question or invitation to the user in a private chat is needs_you = true, even if a similar message appeared earlier (it may be a follow-up nobody answered).
 
 Replies: exactly 3 short replies the user could send with one tap, written in the SAME language as the message, as the user, natural and polite.
 - Each reply at most 38 characters, no emoji, no hashtags, no quotes.
