@@ -105,7 +105,14 @@ async function onMessage(event: NewMessageEvent) {
   if (!chatId) return
   peers.set(chatId, msg.peerId)
 
-  const [sender, chat] = await Promise.all([msg.getSender().catch(() => undefined), msg.getChat().catch(() => undefined)])
+  const [sender, chat] = await Promise.all([
+    msg.getSender().catch(() => undefined),
+    // After a restart the entity cache is cold, so fall back to a direct lookup.
+    msg
+      .getChat()
+      .then(c => c ?? client.getEntity(msg.peerId))
+      .catch(() => client.getEntity(msg.peerId).catch(() => undefined)),
+  ])
   const chatKind: Incoming['chatKind'] = msg.isPrivate ? 'dm' : msg.isChannel && !(chat as any)?.megagroup ? 'channel' : 'group'
   const senderName = nameOf(sender)
   const chatTitle = chatKind === 'dm' ? senderName : nameOf(chat)

@@ -123,8 +123,9 @@ async function renderCard(item: QueueItem) {
   screen = { kind: 'card', item }
   const total = Math.max(1, state?.queueSize ?? 1)
   const where = item.chatKind === 'dm' ? item.senderName : `${item.chatTitle}  -  ${item.senderName}`
-  const head = `${total > 1 ? `1/${total}  ` : ''}${cut(where, 44)}\n[${cut(item.why, 24)}]`
-  const body = `"${cut(item.text, 150)}"`
+  const head = `${total > 1 ? `1/${total}  ` : ''}${cut(where, 44)}\n[${cut(item.why, 30)}]`
+  // A leading @mention of you is noise on a 576px display. Two lines max.
+  const body = cut(item.text.replace(/^@\w+[,:]?\s+/, ''), 108)
   await show([text(1, 'msg', `${head}\n${body}`, 0, 124, 0)], [list(2, 'acts', [...item.replies, ...ACTIONS], 124, H - 124)])
 }
 

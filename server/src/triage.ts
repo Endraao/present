@@ -61,7 +61,7 @@ export async function triage(m: Incoming, me: string): Promise<Triage> {
 
   const replies = (out.replies ?? []).map(r => String(r).trim()).filter(Boolean).slice(0, 3)
   while (replies.length < 3) replies.push(['Ok!', 'In a meeting, back soon', 'Can we talk later?'][replies.length])
-  return { needsYou: Boolean(out.needs_you), why: String(out.why ?? '').slice(0, 24), replies }
+  return { needsYou: Boolean(out.needs_you), why: String(out.why ?? '').slice(0, 60), replies }
 }
 
 export type CatchupInput = { chat: string; lines: string[] }
