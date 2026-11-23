@@ -6,6 +6,8 @@ Present is a G2 app for the moments when you can't look at your phone: a meeting
 
 Track: **Messaging & News (Telegram)**
 
+**Demo video (52 s, real Telegram account + G2 simulator):** [docs/present-demo.mp4](https://github.com/Endraao/present/raw/main/docs/present-demo.mp4)
+
 | Start | A message that needs you | Hold to talk |
 |---|---|---|
 | ![Start](docs/1-start.png) | ![Card](docs/2-card.png) | ![Voice](docs/3-voice.png) |
